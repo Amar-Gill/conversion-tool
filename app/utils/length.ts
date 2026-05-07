@@ -104,3 +104,12 @@ export const lengthConversionMatrix = {
     mile: 1
   }
 } satisfies Record<LengthUnits, Record<LengthUnits, number>>
+
+export function convertLength(
+  value: number,
+  fromUnit: LengthUnits,
+  toUnit: LengthUnits
+): number {
+  if (fromUnit === toUnit) return value
+  return value * lengthConversionMatrix[fromUnit][toUnit]
+}

@@ -104,3 +104,12 @@ export const massConversionMatrix = {
     usTon: 1
   }
 } satisfies Record<MassUnits, Record<MassUnits, number>>
+
+export function convertMass(
+  value: number,
+  fromUnit: MassUnits,
+  toUnit: MassUnits
+): number {
+  if (fromUnit === toUnit) return value
+  return value * massConversionMatrix[fromUnit][toUnit]
+}
