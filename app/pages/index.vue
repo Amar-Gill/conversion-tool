@@ -1,3 +1,25 @@
+<script setup lang="ts">
+const state = reactive<{
+  quantity: number
+  fromUnit?: LengthUnits
+  toUnit?: LengthUnits
+}>({
+  quantity: 0,
+  fromUnit: undefined,
+  toUnit: undefined
+})
+
+const convertedValue = computed<number | undefined>(() => {
+  if (!state.fromUnit || !state.toUnit) {
+    return
+  }
+
+  const conversionFactor = lengthConversionMatrix[state.fromUnit][state.toUnit]
+
+  return state.quantity * conversionFactor
+})
+</script>
+
 <template>
   <div>
     <UContainer>
@@ -6,27 +28,39 @@
           label="Quantity"
           name="quantity"
         >
-          <UInputNumber />
+          <UInputNumber v-model="state.quantity" />
         </UFormField>
       </UForm>
 
       <UForm>
         <UFormField
-          label="From Unit"
+          label="Convert from unit"
           name="from-unit"
         >
-          <UInputMenu />
+          <UInputMenu
+            v-model="state.fromUnit"
+            :items="lengthUnits"
+            placeholder="Select unit..."
+          />
         </UFormField>
       </UForm>
 
       <UForm>
         <UFormField
-          label="To Unit"
+          label="Convert to unit"
           name="to-unit"
         >
-          <UInputMenu />
+          <UInputMenu
+            v-model="state.toUnit"
+            :items="lengthUnits"
+            placeholder="Select unit..."
+          />
         </UFormField>
       </UForm>
+      <div v-if="convertedValue !== undefined">
+        Converted Value:
+        {{ convertedValue }}
+      </div>
     </UContainer>
   </div>
 </template>
