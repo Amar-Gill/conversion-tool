@@ -14,9 +14,7 @@ const convertedValue = computed<number | undefined>(() => {
     return
   }
 
-  const conversionFactor = lengthConversionMatrix[state.fromUnit][state.toUnit]
-
-  return state.quantity * conversionFactor
+  return convertLength(state.quantity, state.fromUnit, state.toUnit)
 })
 </script>
 
